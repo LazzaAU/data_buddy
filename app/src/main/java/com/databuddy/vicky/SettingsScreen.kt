@@ -237,7 +237,10 @@ fun SettingsScreen(
                 }
             }
         ) {
-            DatePicker(state = startDatePickerState)
+            DatePicker(
+                state = startDatePickerState,
+                modifier = Modifier.scale(0.85f)
+            )
         }
     }
     
@@ -263,7 +266,10 @@ fun SettingsScreen(
                 }
             }
         ) {
-            DatePicker(state = endDatePickerState)
+            DatePicker(
+                state = endDatePickerState,
+                modifier = Modifier.scale(0.85f)
+            )
         }
     }
 }
