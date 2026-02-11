@@ -45,31 +45,51 @@ app/src/main/java/com/databuddy/vicky/
 4. Run on an emulator or physical device (API 26+)
 
 ### Running on a Device
-The app requires permission to read network usage stats. On first run, you'll need to:
-1. Go to Settings > Apps > Data Buddy > Permissions
-2. Enable "Usage access" permission
+The app requires permission to read network usage stats. On first run:
+1. The app will show a friendly permission request screen
+2. Tap "Grant Permission" button
+3. Find "Data Buddy" in the system settings list
+4. Toggle the switch ON
+5. Return to the app
+
+### First Time Setup
+1. Grant the usage stats permission (see above)
+2. Tap "Set Up Now" on the welcome screen
+3. Enter your plan details:
+   - **Total Plan Size**: e.g., 300 GB
+   - **Data Remaining Now**: Check your carrier app (e.g., 196 GB)
+   - **Plan Start Date**: Format YYYY-MM-DD (e.g., 2025-11-01)
+   - **Plan End Date**: Format YYYY-MM-DD (e.g., 2026-11-01)
+4. Tap "Save Settings"
+5. The app will automatically track your usage and show Larry's message!
 
 ## Current Status
 
-This is **Version 0.1** - Initial scaffold and foundation:
-- ✅ Complete project structure with Jetpack Compose
-- ✅ Basic UI framework (mock data only)
-- ✅ GitHub repo initialized
+This is **Version 0.5** - Core features implemented! ✨
 
-**Next Steps (Coffee Session Tomorrow)**:
-- ⏳ Settings/Config screen (enter current data remaining, plan details, billing cycle)
-- ⏳ Budget calculator (remaining data ÷ remaining months)
-- ⏳ Room Database for monthly usage history
-- ⏳ NetworkStatsManager integration for real Android data tracking
-- ⏳ Smart "Larry says" logic comparing actual vs budget
-- ⏳ Enhanced UI with appropriate messaging based on usage status
+**Completed Features**:
+- ✅ Room Database for tracking monthly usage and configuration
+- ✅ Settings screen for plan configuration (total GB, remaining data, billing cycle)
+- ✅ Smart budget calculator (remaining data ÷ remaining months)
+- ✅ NetworkStatsManager integration for real Android data tracking
+- ✅ Permission handling with user-friendly guidance
+- ✅ Smart "Larry says" messaging that compares actual vs budget:
+  - Well under budget: "Stream away!"
+  - On track: "Keep it up!"
+  - Slightly over: "Maybe ease up a bit"
+  - Over budget: "Watch less next month!"
+- ✅ Navigation between main screen and settings
+- ✅ Large-text Vicky-friendly UI (24sp+ fonts)
+- ✅ Color-coded cards based on usage status
+
+**Ready to Test**: Load on a real Android device (API 26+) and test!
+
+**Next Steps**:
 - ⏳ Test on Samsung S20 FE (Vicky's device)
-
-**Future Enhancements**:
-- Generic version (remove "Larry", make persona configurable)
-- Widget for home screen
-- Optional visualizations (pie charts, graphs)
-- Multi-user/multi-plan support
+- ⏳ Add app icon and launcher graphics
+- ⏳ Fine-tune messaging based on real-world usage
+- ⏳ Optional: Add data visualization (pie chart)
+- ⏳ Create generic version (configurable persona instead of "Larry")
 
 ## Design Philosophy
 
