@@ -2,6 +2,7 @@ package com.databuddy.vicky.repository
 
 import com.databuddy.vicky.data.*
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.temporal.ChronoUnit
