@@ -1,0 +1,151 @@
+package com.databuddy.vicky
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.databuddy.vicky.data.PlanConfig
+import java.time.LocalDate
+
+@Composable
+fun SettingsScreen(
+    currentConfig: PlanConfig?,
+    onSaveConfig: (PlanConfig) -> Unit,
+    onBack: () -> Unit
+) {
+    var totalDataGB by remember { mutableStateOf(currentConfig?.totalDataGB?.toString() ?: "300") }
+    var remainingDataGB by remember { mutableStateOf(currentConfig?.currentRemainingGB?.toString() ?: "196") }
+    var startDate by remember { mutableStateOf(currentConfig?.billingStartDate ?: "2025-11-01") }
+    var endDate by remember { mutableStateOf(currentConfig?.billingEndDate ?: "2026-11-01") }
+    
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp)
+            .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(24.dp)
+    ) {
+        Spacer(modifier = Modifier.height(16.dp))
+        
+        Text(
+            text = "⚙️ Settings",
+            fontSize = 48.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFF1976D2)
+        )
+        
+        Spacer(modifier = Modifier.height(16.dp))
+        
+        // Instructions Card
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = Color(0xFFE3F2FD)
+            )
+        ) {
+            Text(
+                text = "📋 Enter your data plan details",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFF1976D2),
+                modifier = Modifier.padding(20.dp),
+                textAlign = TextAlign.Center
+            )
+        }
+        
+        // Total Plan Size
+        OutlinedTextField(
+            value = totalDataGB,
+            onValueChange = { totalDataGB = it },
+            label = { Text("Total Plan Size (GB)", fontSize = 20.sp) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            textStyle = MaterialTheme.typography.bodyLarge.copy(fontSize = 28.sp),
+            modifier = Modifier.fillMaxWidth()
+        )
+        
+        // Current Remaining Data
+        OutlinedTextField(
+            value = remainingDataGB,
+            onValueChange = { remainingDataGB = it },
+            label = { Text("Data Remaining Now (GB)", fontSize = 20.sp) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            textStyle = MaterialTheme.typography.bodyLarge.copy(fontSize = 28.sp),
+            modifier = Modifier.fillMaxWidth()
+        )
+        
+        // Start Date
+        OutlinedTextField(
+            value = startDate,
+            onValueChange = { startDate = it },
+            label = { Text("Plan Start Date", fontSize = 20.sp) },
+            placeholder = { Text("YYYY-MM-DD", fontSize = 18.sp) },
+            textStyle = MaterialTheme.typography.bodyLarge.copy(fontSize = 28.sp),
+            modifier = Modifier.fillMaxWidth()
+        )
+        
+        // End Date
+        OutlinedTextField(
+            value = endDate,
+            onValueChange = { endDate = it },
+            label = { Text("Plan End Date", fontSize = 20.sp) },
+            placeholder = { Text("YYYY-MM-DD", fontSize = 18.sp) },
+            textStyle = MaterialTheme.typography.bodyLarge.copy(fontSize = 28.sp),
+            modifier = Modifier.fillMaxWidth()
+        )
+        
+        Spacer(modifier = Modifier.height(24.dp))
+        
+        // Save Button
+        Button(
+            onClick = {
+                val config = PlanConfig(
+                    totalDataGB = totalDataGB.toIntOrNull() ?: 300,
+                    currentRemainingGB = remainingDataGB.toIntOrNull() ?: 196,
+                    billingStartDate = startDate,
+                    billingEndDate = endDate,
+                    lastUpdated = LocalDate.now().toString()
+                )
+                onSaveConfig(config)
+                onBack()
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(72.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF4CAF50)
+            )
+        ) {
+            Text(
+                text = "💾 Save Settings",
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+        
+        // Cancel Button
+        OutlinedButton(
+            onClick = onBack,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(72.dp)
+        ) {
+            Text(
+                text = "Cancel",
+                fontSize = 24.sp
+            )
+        }
+        
+        Spacer(modifier = Modifier.height(16.dp))
+    }
+}

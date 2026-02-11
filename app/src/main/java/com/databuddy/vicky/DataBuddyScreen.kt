@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -15,14 +17,109 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlin.math.roundToInt
 
 @Composable
 fun DataBuddyScreen(
-    viewModel: DataBuddyViewModel = viewModel()
+    viewModel: DataBuddyViewModel,
+    onNavigateToSettings: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
     
+    if (!uiState.isConfigured) {
+        // Show welcome screen with setup button
+        WelcomeScreen(onNavigateToSettings = onNavigateToSettings)
+    } else {
+        // Show main dashboard
+        MainDashboard(uiState = uiState, onNavigateToSettings = onNavigateToSettings)
+    }
+}
+
+@Composable
+fun WelcomeScreen(onNavigateToSettings: () -> Unit) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFFF5F5F5))
+            .padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = "👋",
+            fontSize = 80.sp
+        )
+        
+        Spacer(modifier = Modifier.height(24.dp))
+        
+        Text(
+            text = "Welcome to Data Buddy!",
+            fontSize = 40.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFF1976D2),
+            textAlign = TextAlign.Center
+        )
+        
+        Spacer(modifier = Modifier.height(16.dp))
+        
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = Color(0xFF2196F3)
+            )
+        ) {
+            Column(
+                modifier = Modifier.padding(32.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "Larry says:",
+                    fontSize = 28.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(
+                    text = "Let's get started by setting up your data plan details!",
+                    fontSize = 24.sp,
+                    color = Color.White,
+                    textAlign = TextAlign.Center,
+                    lineHeight = 36.sp
+                )
+            }
+        }
+        
+        Spacer(modifier = Modifier.height(32.dp))
+        
+        Button(
+            onClick = onNavigateToSettings,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(72.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF4CAF50)
+            )
+        ) {
+            Icon(
+                imageVector = Icons.Default.Settings,
+                contentDescription = "Settings",
+                modifier = Modifier.size(32.dp)
+            )
+            Spacer(modifier = Modifier.width(12.dp))
+            Text(
+                text = "Set Up Now",
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+    }
+}
+
+@Composable
+fun MainDashboard(
+    uiState: DataBuddyUiState,
+    onNavigateToSettings: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -32,24 +129,42 @@ fun DataBuddyScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
-        Spacer(modifier = Modifier.height(16.dp))
-        
-        // App Title
-        Text(
-            text = "📱 Data Buddy",
-            fontSize = 48.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color(0xFF1976D2),
-            textAlign = TextAlign.Center
-        )
-        
-        Spacer(modifier = Modifier.height(8.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "📱 Data Buddy",
+                fontSize = 40.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFF1976D2)
+            )
+            
+            IconButton(
+                onClick = onNavigateToSettings,
+                modifier = Modifier.size(56.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Settings,
+                    contentDescription = "Settings",
+                    modifier = Modifier.size(40.dp),
+                    tint = Color(0xFF1976D2)
+                )
+            }
+        }
         
         // Larry's Message Card
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(
-                containerColor = Color(0xFF2196F3)
+                containerColor = when (uiState.usageStatus) {
+                    UsageStatus.WELL_UNDER -> Color(0xFF4CAF50)
+                    UsageStatus.ON_TRACK -> Color(0xFF2196F3)
+                    UsageStatus.SLIGHTLY_OVER -> Color(0xFFFF9800)
+                    UsageStatus.OVER_BUDGET -> Color(0xFFF44336)
+                    else -> Color(0xFF2196F3)
+                }
             ),
             elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
         ) {
@@ -69,31 +184,49 @@ fun DataBuddyScreen(
                 
                 Text(
                     text = uiState.larryMessage,
-                    fontSize = 28.sp,
+                    fontSize = 26.sp,
                     color = Color.White,
                     textAlign = TextAlign.Center,
-                    lineHeight = 40.sp
+                    lineHeight = 38.sp
                 )
             }
         }
         
-        // Data Usage Summary Cards
+        // Budget vs Usage Cards
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             DataCard(
-                title = "Last Month",
-                value = "${uiState.lastMonthUsageGB} GB",
+                title = "Monthly Budget",
+                value = "${uiState.monthlyBudgetGB.roundToInt()} GB",
+                subtitle = "per month",
                 modifier = Modifier.weight(1f),
-                color = Color(0xFFFF9800)
+                color = Color(0xFF2196F3)
             )
             
             DataCard(
                 title = "This Month",
-                value = "${uiState.currentMonthUsageGB} GB",
+                value = "${uiState.currentMonthUsageGB.roundToInt()} GB",
+                subtitle = "used so far",
                 modifier = Modifier.weight(1f),
-                color = Color(0xFF4CAF50)
+                color = when (uiState.usageStatus) {
+                    UsageStatus.WELL_UNDER -> Color(0xFF4CAF50)
+                    UsageStatus.ON_TRACK -> Color(0xFF2196F3)
+                    UsageStatus.SLIGHTLY_OVER, UsageStatus.OVER_BUDGET -> Color(0xFFFF9800)
+                    else -> Color(0xFF4CAF50)
+                }
+            )
+        }
+        
+        // Last Month Usage
+        if (uiState.lastMonthUsageGB > 0) {
+            DataCard(
+                title = "Last Month",
+                value = "${uiState.lastMonthUsageGB.roundToInt()} GB",
+                subtitle = "for comparison",
+                modifier = Modifier.fillMaxWidth(),
+                color = Color(0xFF9E9E9E)
             )
         }
         
@@ -112,7 +245,7 @@ fun DataBuddyScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Data Remaining",
+                    text = "Total Remaining",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
@@ -124,52 +257,9 @@ fun DataBuddyScreen(
                     color = Color.White
                 )
                 Text(
-                    text = "of 300 GB",
+                    text = "of ${uiState.totalDataGB} GB plan",
                     fontSize = 20.sp,
                     color = Color.White.copy(alpha = 0.9f)
-                )
-            }
-        }
-        
-        // Streaming Info Card
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-                containerColor = Color.White
-            ),
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-        ) {
-            Column(
-                modifier = Modifier.padding(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = "🎬 Netflix Streaming",
-                    fontSize = 28.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color(0xFFE50914)
-                )
-                
-                Spacer(modifier = Modifier.height(12.dp))
-                
-                Text(
-                    text = "You can watch about:",
-                    fontSize = 22.sp,
-                    color = Color.Gray
-                )
-                
-                Text(
-                    text = "${uiState.remainingStreamingHours} hours",
-                    fontSize = 48.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color(0xFFE50914)
-                )
-                
-                Text(
-                    text = "of your favourite shows this month!",
-                    fontSize = 22.sp,
-                    color = Color.Gray,
-                    textAlign = TextAlign.Center
                 )
             }
         }
@@ -182,6 +272,7 @@ fun DataBuddyScreen(
 fun DataCard(
     title: String,
     value: String,
+    subtitle: String = "",
     modifier: Modifier = Modifier,
     color: Color = Color.Blue
 ) {
@@ -191,14 +282,15 @@ fun DataCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(20.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = title,
                 fontSize = 18.sp,
                 color = Color.White,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
@@ -208,6 +300,15 @@ fun DataCard(
                 color = Color.White,
                 textAlign = TextAlign.Center
             )
+            if (subtitle.isNotEmpty()) {
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = subtitle,
+                    fontSize = 14.sp,
+                    color = Color.White.copy(alpha = 0.9f),
+                    textAlign = TextAlign.Center
+                )
+            }
         }
     }
 }
