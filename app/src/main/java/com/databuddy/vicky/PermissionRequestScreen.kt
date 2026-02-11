@@ -4,6 +4,8 @@ import android.content.Intent
 import android.provider.Settings
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,26 +27,25 @@ fun PermissionRequestScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFF5F5F5))
-            .padding(24.dp),
+            .padding(20.dp)
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        Spacer(modifier = Modifier.height(16.dp))
+        
         Text(
             text = "🔒",
-            fontSize = 80.sp
+            fontSize = 60.sp
         )
-        
-        Spacer(modifier = Modifier.height(24.dp))
         
         Text(
             text = "Permission Needed",
-            fontSize = 40.sp,
+            fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
             color = Color(0xFF1976D2),
             textAlign = TextAlign.Center
         )
-        
-        Spacer(modifier = Modifier.height(16.dp))
         
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -53,27 +54,25 @@ fun PermissionRequestScreen(
             )
         ) {
             Column(
-                modifier = Modifier.padding(32.dp),
+                modifier = Modifier.padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     text = "Larry says:",
-                    fontSize = 28.sp,
+                    fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = "To track your data usage, I need permission to check how much data you've used. Don't worry, it's safe!",
-                    fontSize = 24.sp,
+                    fontSize = 20.sp,
                     color = Color.White,
                     textAlign = TextAlign.Center,
-                    lineHeight = 36.sp
+                    lineHeight = 30.sp
                 )
             }
         }
-        
-        Spacer(modifier = Modifier.height(32.dp))
         
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -82,25 +81,23 @@ fun PermissionRequestScreen(
             )
         ) {
             Column(
-                modifier = Modifier.padding(24.dp)
+                modifier = Modifier.padding(20.dp)
             ) {
                 Text(
                     text = "📝 Steps:",
-                    fontSize = 24.sp,
+                    fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color(0xFF1976D2)
                 )
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(10.dp))
                 Text(
                     text = "1. Tap 'Grant Permission' below\n\n2. Find 'Data Buddy' in the list\n\n3. Turn ON the switch\n\n4. Come back to the app",
-                    fontSize = 22.sp,
-                    lineHeight = 34.sp,
+                    fontSize = 19.sp,
+                    lineHeight = 30.sp,
                     color = Color.DarkGray
                 )
             }
         }
-        
-        Spacer(modifier = Modifier.height(32.dp))
         
         Button(
             onClick = {
@@ -110,19 +107,17 @@ fun PermissionRequestScreen(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(72.dp),
+                .height(64.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFF4CAF50)
             )
         ) {
             Text(
                 text = "✅ Grant Permission",
-                fontSize = 28.sp,
+                fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
             )
         }
-        
-        Spacer(modifier = Modifier.height(16.dp))
         
         TextButton(
             onClick = onPermissionGranted,
@@ -130,9 +125,11 @@ fun PermissionRequestScreen(
         ) {
             Text(
                 text = "I've already granted it",
-                fontSize = 20.sp,
+                fontSize = 18.sp,
                 color = Color(0xFF1976D2)
             )
         }
+        
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }
