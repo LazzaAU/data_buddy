@@ -37,6 +37,11 @@ class DataBuddyRepository(private val dao: DataBuddyDao) {
     suspend fun calculateActualRemainingData(config: PlanConfig): Double {
         val allUsage = dao.getAllMonthlyUsage().first()
         val totalUsed = allUsage.sumOf { it.dataUsedGB }
+        android.util.Log.d("DataBuddy", "calculateActualRemaining: ${config.currentRemainingGB}GB - ${totalUsed}GB = ${config.currentRemainingGB - totalUsed}GB")
+        android.util.Log.d("DataBuddy", "All usage records: ${allUsage.size}")
+        allUsage.forEach { usage ->
+            android.util.Log.d("DataBuddy", "  ${usage.year}-${usage.month}: ${usage.dataUsedGB}GB")
+        }
         return config.currentRemainingGB - totalUsed
     }
     

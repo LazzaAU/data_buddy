@@ -1,6 +1,7 @@
 package com.databuddy.vicky
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.databuddy.vicky.data.*
@@ -79,6 +80,13 @@ class DataBuddyViewModel(application: Application) : AndroidViewModel(applicatio
     }
     
     private suspend fun updateUiState(config: PlanConfig, recentUsage: List<MonthlyUsage>) {
+        Log.d("DataBuddy", "=== UPDATE UI STATE ===")
+        Log.d("DataBuddy", "Config: totalGB=${config.totalDataGB}, currentRemaining=${config.currentRemainingGB}")
+        Log.d("DataBuddy", "Recent usage count: ${recentUsage.size}")
+        recentUsage.forEachIndexed { index, usage ->
+            Log.d("DataBuddy", "  [$index] ${usage.year}-${usage.month}: ${usage.dataUsedGB}GB")
+        }
+        
         val monthlyBudget = repository.calculateMonthlyBudget(config)
         val currentMonth = recentUsage.firstOrNull()
         val lastMonth = recentUsage.getOrNull(1)
@@ -88,6 +96,8 @@ class DataBuddyViewModel(application: Application) : AndroidViewModel(applicatio
         
         // Calculate actual remaining data (initial - all usage)
         val actualRemaining = repository.calculateActualRemainingData(config)
+        Log.d("DataBuddy", "Monthly budget: $monthlyBudget GB")
+        Log.d("DataBuddy", "Actual remaining: $actualRemaining GB (should be ${config.currentRemainingGB} - total_usage)")
         
         val status = calculateUsageStatus(currentUsage, monthlyBudget)
         val message = generateLarryMessage(status, currentUsage, previousUsage, monthlyBudget, actualRemaining.toInt())
