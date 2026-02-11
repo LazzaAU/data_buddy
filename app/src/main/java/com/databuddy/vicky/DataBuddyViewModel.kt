@@ -86,8 +86,11 @@ class DataBuddyViewModel(application: Application) : AndroidViewModel(applicatio
         val currentUsage = currentMonth?.dataUsedGB ?: 0.0
         val previousUsage = lastMonth?.dataUsedGB ?: 0.0
         
+        // Calculate actual remaining data (initial - all usage)
+        val actualRemaining = repository.calculateActualRemainingData(config)
+        
         val status = calculateUsageStatus(currentUsage, monthlyBudget)
-        val message = generateLarryMessage(status, currentUsage, previousUsage, monthlyBudget, config.currentRemainingGB)
+        val message = generateLarryMessage(status, currentUsage, previousUsage, monthlyBudget, actualRemaining.toInt())
         
         _uiState.value = DataBuddyUiState(
             isConfigured = true,
@@ -95,7 +98,7 @@ class DataBuddyViewModel(application: Application) : AndroidViewModel(applicatio
             lastMonthUsageGB = previousUsage,
             currentMonthUsageGB = currentUsage,
             totalDataGB = config.totalDataGB,
-            remainingDataGB = config.currentRemainingGB,
+            remainingDataGB = actualRemaining.toInt(),
             larryMessage = message,
             usageStatus = status
         )

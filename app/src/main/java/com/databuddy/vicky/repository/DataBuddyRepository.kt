@@ -31,10 +31,26 @@ class DataBuddyRepository(private val dao: DataBuddyDao) {
     }
     
     /**
-     * Calculate monthly data budget based on remaining data and remaining time
-     * remaining data ÷ remaining months = budget per month
+     * Calculate actual remaining data by subtracting all usage since setup
      */
-    fun calculateMonthlyBudget(config: PlanConfig): Double {
+    suspend fun calculateActualRemainingData(config: PlanConfig): Double {
+        val allUsage = dao.getAllMonthlyUsage()
+        var totalUsed = 0.0
+        
+        // Wait for the flow to emit once
+        allUsage.collect { usageList ->
+            totalUsed = usageList.sumOf { it.dataUsedGB }
+            return@collect // Exit after first emission
+        }
+        
+        return config.currentRemainingGB - totalUsed
+    }
+    
+    /**
+     * Calculate monthly data budget based on ACTUAL remaining data and remaining time
+     * (actual remaining data after usage) ÷ remaining months = budget per month
+     */
+    suspend fun calculateMonthlyBudget(config: PlanConfig): Double {
         val endDate = LocalDate.parse(config.billingEndDate)
         val today = LocalDate.now()
         
@@ -44,10 +60,13 @@ class DataBuddyRepository(private val dao: DataBuddyDao) {
             YearMonth.from(endDate)
         ) + 1 // +1 to include current month
         
+        // Get actual remaining data (initial - all usage)
+        val actualRemaining = calculateActualRemainingData(config)
+        
         return if (monthsRemaining > 0) {
-            config.currentRemainingGB.toDouble() / monthsRemaining
+            actualRemaining / monthsRemaining
         } else {
-            config.currentRemainingGB.toDouble()
+            actualRemaining
         }
     }
     
