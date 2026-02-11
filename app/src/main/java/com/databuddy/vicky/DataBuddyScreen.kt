@@ -198,7 +198,7 @@ fun MainDashboard(
         ) {
             DataCard(
                 title = "Monthly Budget",
-                value = "${uiState.monthlyBudgetGB.roundToInt()} GB",
+                value = "${String.format("%.1f", uiState.monthlyBudgetGB)} GB",
                 subtitle = "per month",
                 modifier = Modifier.weight(1f),
                 color = Color(0xFF2196F3)
@@ -206,7 +206,7 @@ fun MainDashboard(
             
             DataCard(
                 title = "This Month",
-                value = "${uiState.currentMonthUsageGB.roundToInt()} GB",
+                value = "${String.format("%.1f", uiState.currentMonthUsageGB)} GB",
                 subtitle = "used so far",
                 modifier = Modifier.weight(1f),
                 color = when (uiState.usageStatus) {
@@ -222,7 +222,7 @@ fun MainDashboard(
         if (uiState.lastMonthUsageGB > 0) {
             DataCard(
                 title = "Last Month",
-                value = "${uiState.lastMonthUsageGB.roundToInt()} GB",
+                value = "${String.format("%.1f", uiState.lastMonthUsageGB)} GB",
                 subtitle = "for comparison",
                 modifier = Modifier.fillMaxWidth(),
                 color = Color(0xFF9E9E9E)
