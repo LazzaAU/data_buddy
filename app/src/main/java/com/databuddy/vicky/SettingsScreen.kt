@@ -19,6 +19,7 @@ import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+import androidx.compose.ui.text.TextStyle
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -122,7 +123,7 @@ fun SettingsScreen(
             onClick = { showStartDatePicker = true },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(64.dp)
+                .height(72.dp)
         ) {
             Column(
                 horizontalAlignment = Alignment.Start,
@@ -130,13 +131,13 @@ fun SettingsScreen(
             ) {
                 Text(
                     text = "Plan Start Date",
-                    fontSize = 14.sp,
+                    fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = startDate.format(dateFormatter),
-                    fontSize = 20.sp,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
                 )
@@ -148,7 +149,7 @@ fun SettingsScreen(
             onClick = { showEndDatePicker = true },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(64.dp)
+                .height(72.dp)
         ) {
             Column(
                 horizontalAlignment = Alignment.Start,
@@ -156,13 +157,13 @@ fun SettingsScreen(
             ) {
                 Text(
                     text = "Plan End Date",
-                    fontSize = 14.sp,
+                    fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = endDate.format(dateFormatter),
-                    fontSize = 20.sp,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
                 )
@@ -215,53 +216,73 @@ fun SettingsScreen(
     }
     
     // Start Date Picker Dialog
-    if (showStartDatePicker) {
-        DatePickerDialog(
-            onDismissRequest = { showStartDatePicker = false },
-            confirmButton = {
-                TextButton(onClick = {
-                    startDatePickerState.selectedDateMillis?.let { millis ->
-                        startDate = Instant.ofEpochMilli(millis)
-                            .atZone(ZoneId.systemDefault())
-                            .toLocalDate()
+    if (val smallerTypography = MaterialTheme.typography.copy(
+            bodyLarge = MaterialTheme.typography.bodyLarge.copy(fontSize = 14.sp),
+            bodyMedium = MaterialTheme.typography.bodyMedium.copy(fontSize = 12.sp),
+            labelLarge = MaterialTheme.typography.labelLarge.copy(fontSize = 12.sp),
+            titleMedium = MaterialTheme.typography.titleMedium.copy(fontSize = 14.sp),
+            titleLarge = MaterialTheme.typography.titleLarge.copy(fontSize = 16.sp)
+        )
+        
+        MaterialTheme(typography = smallerTypography) {
+            DatePickerDialog(
+                onDismissRequest = { showStartDatePicker = false },
+                confirmButton = {
+                    TextButton(onClick = {
+                        startDatePickerState.selectedDateMillis?.let { millis ->
+                            startDate = Instant.ofEpochMilli(millis)
+                                .atZone(ZoneId.systemDefault())
+                                .toLocalDate()
+                        }
+                        showStartDatePicker = false
+                    }) {
+                        Text("OK", fontSize = 14.sp)
                     }
-                    showStartDatePicker = false
-                }) {
-                    Text("OK", fontSize = 18.sp)
+                },
+                dismissButton = {
+                    TextButton(onClick = { showStartDatePicker = false }) {
+                        Text("Cancel", fontSize = 14.sp)
+                    }
                 }
-            },
-            dismissButton = {
-                TextButton(onClick = { showStartDatePicker = false }) {
-                    Text("Cancel", fontSize = 18.sp)
-                }
+            ) {
+                DatePicker(state = startDatePickerState)
             }
-        ) {
-            DatePicker(state = startDatePickerState)
         }
     }
     
     // End Date Picker Dialog
     if (showEndDatePicker) {
-        DatePickerDialog(
-            onDismissRequest = { showEndDatePicker = false },
-            confirmButton = {
-                TextButton(onClick = {
-                    endDatePickerState.selectedDateMillis?.let { millis ->
-                        endDate = Instant.ofEpochMilli(millis)
-                            .atZone(ZoneId.systemDefault())
-                            .toLocalDate()
+        val smallerTypography = MaterialTheme.typography.copy(
+            bodyLarge = MaterialTheme.typography.bodyLarge.copy(fontSize = 14.sp),
+            bodyMedium = MaterialTheme.typography.bodyMedium.copy(fontSize = 12.sp),
+            labelLarge = MaterialTheme.typography.labelLarge.copy(fontSize = 12.sp),
+            titleMedium = MaterialTheme.typography.titleMedium.copy(fontSize = 14.sp),
+            titleLarge = MaterialTheme.typography.titleLarge.copy(fontSize = 16.sp)
+        )
+        
+        MaterialTheme(typography = smallerTypography) {
+            DatePickerDialog(
+                onDismissRequest = { showEndDatePicker = false },
+                confirmButton = {
+                    TextButton(onClick = {
+                        endDatePickerState.selectedDateMillis?.let { millis ->
+                            endDate = Instant.ofEpochMilli(millis)
+                                .atZone(ZoneId.systemDefault())
+                                .toLocalDate()
+                        }
+                        showEndDatePicker = false
+                    }) {
+                        Text("OK", fontSize = 14.sp)
                     }
-                    showEndDatePicker = false
-                }) {
-                    Text("OK", fontSize = 18.sp)
+                },
+                dismissButton = {
+                    TextButton(onClick = { showEndDatePicker = false }) {
+                        Text("Cancel", fontSize = 14.sp)
+                    }
                 }
-            },
-            dismissButton = {
-                TextButton(onClick = { showEndDatePicker = false }) {
-                    Text("Cancel", fontSize = 18.sp)
-                }
+            ) {
+                DatePicker(state = endDatePickerState)
             }
-        ) {
             DatePicker(state = endDatePickerState)
         }
     }
