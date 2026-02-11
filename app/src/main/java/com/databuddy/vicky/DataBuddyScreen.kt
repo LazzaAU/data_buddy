@@ -250,7 +250,7 @@ fun MainDashboard(
                     color = Color.White
                 )
                 Text(
-                    text = "${uiState.remainingDataGB} GB",
+                    text = "${String.format("%.1f", uiState.remainingDataGB.toDouble())} GB",
                     fontSize = 44.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
