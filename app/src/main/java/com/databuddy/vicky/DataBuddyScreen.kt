@@ -128,39 +128,31 @@ fun MainDashboard(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
+        // Settings icon at top right
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            horizontalArrangement = Arrangement.End
         ) {
-            Text(
-                text = "📱 Data Buddy",
-                fontSize = 28.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFF1976D2)
-            )
-            
             IconButton(
                 onClick = onNavigateToSettings,
-                modifier = Modifier.size(48.dp)
+                modifier = Modifier.size(56.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.Settings,
                     contentDescription = "Settings",
-                    modifier = Modifier.size(32.dp),
+                    modifier = Modifier.size(40.dp),
                     tint = Color(0xFF1976D2)
                 )
             }
         }
         
-        // Larry's Message Card
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-                containerColor = when (uiState.usageStatus) {
-                    UsageStatus.WELL_UNDER -> Color(0xFF4CAF50)
-                    UsageStatus.ON_TRACK -> Color(0xFF2196F3)
-                    UsageStatus.SLIGHTLY_OVER -> Color(0xFFFF9800)
+        // App title centered
+        Text(
+            text = "📱 Data Buddy",
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFF1976D2)
+        )
                     UsageStatus.OVER_BUDGET -> Color(0xFFF44336)
                     else -> Color(0xFF2196F3)
                 }
@@ -251,7 +243,7 @@ fun MainDashboard(
                 )
                 Text(
                     text = "${String.format("%.1f", uiState.remainingDataGB.toDouble())} GB",
-                    fontSize = 44.sp,
+                    fontSize = 38.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
@@ -261,7 +253,13 @@ fun MainDashboard(
                     color = Color.White.copy(alpha = 0.9f)
                 )
             }
+
         }
+        Text(
+            text = "GB stands for Giga Byte",
+            fontSize = 10.sp,
+            color = Color.Black
+        )
         
         Spacer(modifier = Modifier.height(16.dp))
     }
