@@ -42,6 +42,7 @@ fun DataBuddyTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = false, // Disabled for consistent Vicky-friendly theme
+    smallerText: Boolean = false, // For date picker calendar
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -62,9 +63,11 @@ fun DataBuddyTheme(
         }
     }
 
+    val typography = if (smallerText) SmallTypography else Typography
+
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = typography,
         content = content
     )
 }

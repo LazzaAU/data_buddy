@@ -20,6 +20,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 import androidx.compose.ui.draw.scale
+import com.databuddy.vicky.ui.theme.DataBuddyTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -217,59 +218,67 @@ fun SettingsScreen(
     
     // Start Date Picker Dialog
     if (showStartDatePicker) {
-        DatePickerDialog(
-            onDismissRequest = { showStartDatePicker = false },
-            confirmButton = {
-                TextButton(onClick = {
-                    startDatePickerState.selectedDateMillis?.let { millis ->
-                        startDate = Instant.ofEpochMilli(millis)
-                            .atZone(ZoneId.systemDefault())
-                            .toLocalDate()
-                    }
-                    showStartDatePicker = false
-                }) {
-                    Text("OK")
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { showStartDatePicker = false }) {
-                    Text("Cancel")
-                }
-            }
+        DataBuddyTheme(
+            smallerText = true
         ) {
-            DatePicker(
-                state = startDatePickerState,
-                modifier = Modifier.scale(0.85f)
-            )
+            DatePickerDialog(
+                onDismissRequest = { showStartDatePicker = false },
+                confirmButton = {
+                    TextButton(onClick = {
+                        startDatePickerState.selectedDateMillis?.let { millis ->
+                            startDate = Instant.ofEpochMilli(millis)
+                                .atZone(ZoneId.systemDefault())
+                                .toLocalDate()
+                        }
+                        showStartDatePicker = false
+                    }) {
+                        Text("OK")
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showStartDatePicker = false }) {
+                        Text("Cancel")
+                    }
+                }
+            ) {
+                DatePicker(
+                    state = startDatePickerState,
+                    modifier = Modifier.scale(0.85f)
+                )
+            }
         }
     }
     
     // End Date Picker Dialog
     if (showEndDatePicker) {
-        DatePickerDialog(
-            onDismissRequest = { showEndDatePicker = false },
-            confirmButton = {
-                TextButton(onClick = {
-                    endDatePickerState.selectedDateMillis?.let { millis ->
-                        endDate = Instant.ofEpochMilli(millis)
-                            .atZone(ZoneId.systemDefault())
-                            .toLocalDate()
-                    }
-                    showEndDatePicker = false
-                }) {
-                    Text("OK")
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { showEndDatePicker = false }) {
-                    Text("Cancel")
-                }
-            }
+        DataBuddyTheme(
+            smallerText = true
         ) {
-            DatePicker(
-                state = endDatePickerState,
-                modifier = Modifier.scale(0.85f)
-            )
+            DatePickerDialog(
+                onDismissRequest = { showEndDatePicker = false },
+                confirmButton = {
+                    TextButton(onClick = {
+                        endDatePickerState.selectedDateMillis?.let { millis ->
+                            endDate = Instant.ofEpochMilli(millis)
+                                .atZone(ZoneId.systemDefault())
+                                .toLocalDate()
+                        }
+                        showEndDatePicker = false
+                    }) {
+                        Text("OK")
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showEndDatePicker = false }) {
+                        Text("Cancel")
+                    }
+                }
+            ) {
+                DatePicker(
+                    state = endDatePickerState,
+                    modifier = Modifier.scale(0.85f)
+                )
+            }
         }
     }
 }
