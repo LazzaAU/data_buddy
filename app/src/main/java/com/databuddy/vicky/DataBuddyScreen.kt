@@ -135,19 +135,19 @@ fun MainDashboard(
         ) {
             Text(
                 text = "📱 Data Buddy",
-                fontSize = 40.sp,
+                fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color(0xFF1976D2)
             )
             
             IconButton(
                 onClick = onNavigateToSettings,
-                modifier = Modifier.size(56.dp)
+                modifier = Modifier.size(48.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.Settings,
                     contentDescription = "Settings",
-                    modifier = Modifier.size(40.dp),
+                    modifier = Modifier.size(32.dp),
                     tint = Color(0xFF1976D2)
                 )
             }
@@ -168,25 +168,25 @@ fun MainDashboard(
             elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
         ) {
             Column(
-                modifier = Modifier.padding(32.dp),
+                modifier = Modifier.padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     text = "👋 Larry says:",
-                    fontSize = 32.sp,
+                    fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
                     textAlign = TextAlign.Center
                 )
                 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(12.dp))
                 
                 Text(
                     text = uiState.larryMessage,
-                    fontSize = 26.sp,
+                    fontSize = 19.sp,
                     color = Color.White,
                     textAlign = TextAlign.Center,
-                    lineHeight = 38.sp
+                    lineHeight = 28.sp
                 )
             }
         }
@@ -240,24 +240,24 @@ fun MainDashboard(
             elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
         ) {
             Column(
-                modifier = Modifier.padding(24.dp),
+                modifier = Modifier.padding(20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     text = "Total Remaining",
-                    fontSize = 24.sp,
+                    fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
                 Text(
                     text = "${uiState.remainingDataGB} GB",
-                    fontSize = 56.sp,
+                    fontSize = 44.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
                 Text(
                     text = "of ${uiState.totalDataGB} GB plan",
-                    fontSize = 20.sp,
+                    fontSize = 16.sp,
                     color = Color.White.copy(alpha = 0.9f)
                 )
             }
@@ -281,29 +281,29 @@ fun DataCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column(
-            modifier = Modifier.padding(20.dp),
+            modifier = Modifier.padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = title,
-                fontSize = 18.sp,
+                fontSize = 15.sp,
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(6.dp))
             Text(
                 text = value,
-                fontSize = 32.sp,
+                fontSize = 26.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White,
                 textAlign = TextAlign.Center
             )
             if (subtitle.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(3.dp))
                 Text(
                     text = subtitle,
-                    fontSize = 14.sp,
+                    fontSize = 12.sp,
                     color = Color.White.copy(alpha = 0.9f),
                     textAlign = TextAlign.Center
                 )

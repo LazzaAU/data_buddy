@@ -40,12 +40,12 @@ fun SettingsScreen(
         
         Text(
             text = "⚙️ Settings",
-            fontSize = 48.sp,
+            fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
             color = Color(0xFF1976D2)
         )
         
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(12.dp))
         
         // Instructions Card
         Card(
@@ -56,10 +56,10 @@ fun SettingsScreen(
         ) {
             Text(
                 text = "📋 Enter your data plan details",
-                fontSize = 24.sp,
+                fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color(0xFF1976D2),
-                modifier = Modifier.padding(20.dp),
+                modifier = Modifier.padding(16.dp),
                 textAlign = TextAlign.Center
             )
         }
@@ -68,9 +68,9 @@ fun SettingsScreen(
         OutlinedTextField(
             value = totalDataGB,
             onValueChange = { totalDataGB = it },
-            label = { Text("Total Plan Size (GB)", fontSize = 20.sp) },
+            label = { Text("Total Plan Size (GB)", fontSize = 16.sp) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            textStyle = MaterialTheme.typography.bodyLarge.copy(fontSize = 28.sp),
+            textStyle = MaterialTheme.typography.bodyLarge.copy(fontSize = 20.sp),
             modifier = Modifier.fillMaxWidth()
         )
         
@@ -78,9 +78,9 @@ fun SettingsScreen(
         OutlinedTextField(
             value = remainingDataGB,
             onValueChange = { remainingDataGB = it },
-            label = { Text("Data Remaining Now (GB)", fontSize = 20.sp) },
+            label = { Text("Data Remaining Now (GB)", fontSize = 16.sp) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            textStyle = MaterialTheme.typography.bodyLarge.copy(fontSize = 28.sp),
+            textStyle = MaterialTheme.typography.bodyLarge.copy(fontSize = 20.sp),
             modifier = Modifier.fillMaxWidth()
         )
         
@@ -88,9 +88,9 @@ fun SettingsScreen(
         OutlinedTextField(
             value = startDate,
             onValueChange = { startDate = it },
-            label = { Text("Plan Start Date", fontSize = 20.sp) },
-            placeholder = { Text("YYYY-MM-DD", fontSize = 18.sp) },
-            textStyle = MaterialTheme.typography.bodyLarge.copy(fontSize = 28.sp),
+            label = { Text("Plan Start Date", fontSize = 16.sp) },
+            placeholder = { Text("YYYY-MM-DD", fontSize = 14.sp) },
+            textStyle = MaterialTheme.typography.bodyLarge.copy(fontSize = 20.sp),
             modifier = Modifier.fillMaxWidth()
         )
         
@@ -98,9 +98,9 @@ fun SettingsScreen(
         OutlinedTextField(
             value = endDate,
             onValueChange = { endDate = it },
-            label = { Text("Plan End Date", fontSize = 20.sp) },
-            placeholder = { Text("YYYY-MM-DD", fontSize = 18.sp) },
-            textStyle = MaterialTheme.typography.bodyLarge.copy(fontSize = 28.sp),
+            label = { Text("Plan End Date", fontSize = 16.sp) },
+            placeholder = { Text("YYYY-MM-DD", fontSize = 14.sp) },
+            textStyle = MaterialTheme.typography.bodyLarge.copy(fontSize = 20.sp),
             modifier = Modifier.fillMaxWidth()
         )
         
@@ -121,14 +121,14 @@ fun SettingsScreen(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(72.dp),
+                .height(56.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFF4CAF50)
             )
         ) {
             Text(
                 text = "💾 Save Settings",
-                fontSize = 28.sp,
+                fontSize = 18.sp,
                 fontWeight = FontWeight.Bold
             )
         }
@@ -138,11 +138,11 @@ fun SettingsScreen(
             onClick = onBack,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(72.dp)
+                .height(56.dp)
         ) {
             Text(
                 text = "Cancel",
-                fontSize = 24.sp
+                fontSize = 18.sp
             )
         }
         
