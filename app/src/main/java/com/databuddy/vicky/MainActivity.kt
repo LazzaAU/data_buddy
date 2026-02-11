@@ -15,10 +15,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.databuddy.vicky.ui.theme.DataBuddyTheme
+import com.databuddy.vicky.util.NotificationHelper
+import com.databuddy.vicky.util.WorkManagerHelper
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // Setup notifications
+        NotificationHelper.createNotificationChannel(this)
+        WorkManagerHelper.scheduleDailyDataCheck(this)
+        
         setContent {
             DataBuddyTheme {
                 Surface(
