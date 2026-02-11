@@ -37,11 +37,24 @@ fun DataBuddyApp() {
     val navController = rememberNavController()
     val viewModel: DataBuddyViewModel = viewModel()
     val uiState by viewModel.uiState.collectAsState()
+    val hasPermission = viewModel.hasUsagePermission()
     
     NavHost(
         navController = navController,
-        startDestination = "main"
+        startDestination = if (hasPermission) "main" else "permission"
     ) {
+        composable("permission") {
+            PermissionRequestScreen(
+                onPermissionGranted = {
+                    if (viewModel.hasUsagePermission()) {
+                        navController.navigate("main") {
+                            popUpTo("permission") { inclusive = true }
+                        }
+                    }
+                }
+            )
+        }
+        
         composable("main") {
             DataBuddyScreen(
                 viewModel = viewModel,

@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.databuddy.vicky.data.*
 import com.databuddy.vicky.repository.DataBuddyRepository
+import com.databuddy.vicky.util.DataUsageReader
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -33,12 +34,33 @@ class DataBuddyViewModel(application: Application) : AndroidViewModel(applicatio
     
     private val database = DataBuddyDatabase.getDatabase(application)
     private val repository = DataBuddyRepository(database.dataBuddyDao())
+    private val dataUsageReader = DataUsageReader(application)
     
     private val _uiState = MutableStateFlow(DataBuddyUiState())
     val uiState: StateFlow<DataBuddyUiState> = _uiState.asStateFlow()
     
     init {
         observeDataChanges()
+        // Sync real usage data when app starts
+        syncCurrentMonthUsage()
+    }
+    
+    /**
+     * Read current month's actual usage from Android and save to database
+     */
+    private fun syncCurrentMonthUsage() {
+        viewModelScope.launch {
+            if (dataUsageReader.hasUsageStatsPermission()) {
+                val currentUsage = dataUsageReader.getCurrentMonthDataUsage()
+                if (currentUsage > 0) {
+                    updateCurrentMonthUsage(currentUsage)
+                }
+            }
+        }
+    }
+    
+    fun hasUsagePermission(): Boolean {
+        return dataUsageReader.hasUsageStatsPermission()
     }
     
     private fun observeDataChanges() {
