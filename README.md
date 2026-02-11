@@ -51,14 +51,25 @@ The app requires permission to read network usage stats. On first run, you'll ne
 
 ## Current Status
 
-This is **Version 1.0** - a foundation build with:
-- ✅ Complete UI framework with Jetpack Compose
-- ✅ "Larry says..." messaging system
-- ✅ Sample data display (currently using mock data)
-- ⏳ TODO: Integrate with Android's NetworkStatsManager for real data
-- ⏳ TODO: Implement November-to-November billing cycle tracking
-- ⏳ TODO: Add data persistence (SharedPreferences or Room DB)
-- ⏳ TODO: Create app icon and launcher graphics
+This is **Version 0.1** - Initial scaffold and foundation:
+- ✅ Complete project structure with Jetpack Compose
+- ✅ Basic UI framework (mock data only)
+- ✅ GitHub repo initialized
+
+**Next Steps (Coffee Session Tomorrow)**:
+- ⏳ Settings/Config screen (enter current data remaining, plan details, billing cycle)
+- ⏳ Budget calculator (remaining data ÷ remaining months)
+- ⏳ Room Database for monthly usage history
+- ⏳ NetworkStatsManager integration for real Android data tracking
+- ⏳ Smart "Larry says" logic comparing actual vs budget
+- ⏳ Enhanced UI with appropriate messaging based on usage status
+- ⏳ Test on Samsung S20 FE (Vicky's device)
+
+**Future Enhancements**:
+- Generic version (remove "Larry", make persona configurable)
+- Widget for home screen
+- Optional visualizations (pie charts, graphs)
+- Multi-user/multi-plan support
 
 ## Design Philosophy
 
