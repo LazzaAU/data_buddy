@@ -59,10 +59,6 @@ fun SettingsScreen(
     val endDatePickerState = rememberDatePickerState(
         initialSelectedDateMillis = endDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
     )
-    var totalDataGB by remember { mutableStateOf(currentConfig?.totalDataGB?.toString() ?: "300") }
-    var remainingDataGB by remember { mutableStateOf(currentConfig?.currentRemainingGB?.toString() ?: "196") }
-    var startDate by remember { mutableStateOf(currentConfig?.billingStartDate ?: "2025-11-01") }
-    var endDate by remember { mutableStateOf(currentConfig?.billingEndDate ?: "2026-11-01") }
     
     Column(
         modifier = Modifier
