@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 
 @Database(
     entities = [PlanConfig::class, MonthlyUsage::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class DataBuddyDatabase : RoomDatabase() {
@@ -24,7 +24,9 @@ abstract class DataBuddyDatabase : RoomDatabase() {
                     context.applicationContext,
                     DataBuddyDatabase::class.java,
                     "data_buddy_database"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration() // Clear old data on schema change
+                    .build()
                 INSTANCE = instance
                 instance
             }
