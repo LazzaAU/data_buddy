@@ -34,15 +34,8 @@ class DataBuddyRepository(private val dao: DataBuddyDao) {
      * Calculate actual remaining data by subtracting all usage since setup
      */
     suspend fun calculateActualRemainingData(config: PlanConfig): Double {
-        val allUsage = dao.getAllMonthlyUsage()
-        var totalUsed = 0.0
-        
-        // Wait for the flow to emit once
-        allUsage.collect { usageList ->
-            totalUsed = usageList.sumOf { it.dataUsedGB }
-            return@collect // Exit after first emission
-        }
-        
+        val allUsage = dao.getAllMonthlyUsage().first()
+        val totalUsed = allUsage.sumOf { it.dataUsedGB }
         return config.currentRemainingGB - totalUsed
     }
     
