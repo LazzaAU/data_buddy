@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.databuddy.vicky.data.PlanConfig
@@ -63,16 +62,16 @@ fun SettingsScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(24.dp)
+            .padding(20.dp)
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(24.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Spacer(modifier = Modifier.height(16.dp))
         
         Text(
             text = "⚙️ Settings",
-            fontSize = 32.sp,
+            fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
             color = Color(0xFF1976D2)
         )
@@ -88,7 +87,37 @@ fun SettingsScreen(
         ) {
             Text(
                 text = "📋 Enter your data plan details",
-                fontS Picker Button
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Medium,
+                modifier = Modifier.padding(16.dp)
+            )
+        }
+        
+        Spacer(modifier = Modifier.height(8.dp))
+        
+        // Total Data
+        OutlinedTextField(
+            value = totalDataGB,
+            onValueChange = { totalDataGB = it },
+            label = { Text("Total Data (GB)", fontSize = 16.sp) },
+            placeholder = { Text("e.g., 300", fontSize = 14.sp) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            textStyle = MaterialTheme.typography.bodyLarge.copy(fontSize = 20.sp),
+            modifier = Modifier.fillMaxWidth()
+        )
+        
+        // Remaining Data
+        OutlinedTextField(
+            value = remainingDataGB,
+            onValueChange = { remainingDataGB = it },
+            label = { Text("Current Remaining (GB)", fontSize = 16.sp) },
+            placeholder = { Text("e.g., 196", fontSize = 14.sp) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            textStyle = MaterialTheme.typography.bodyLarge.copy(fontSize = 20.sp),
+            modifier = Modifier.fillMaxWidth()
+        )
+        
+        // Start Date Picker Button
         OutlinedButton(
             onClick = { showStartDatePicker = true },
             modifier = Modifier
@@ -116,7 +145,39 @@ fun SettingsScreen(
         
         // End Date Picker Button
         OutlinedButton(
-            onClick = { showEndDatePicker = true.toString(),
+            onClick = { showEndDatePicker = true },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(64.dp)
+        ) {
+            Column(
+                horizontalAlignment = Alignment.Start,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = "Plan End Date",
+                    fontSize = 14.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = endDate.format(dateFormatter),
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+        }
+        
+        Spacer(modifier = Modifier.height(24.dp))
+        
+        // Save Button
+        Button(
+            onClick = {
+                val config = PlanConfig(
+                    totalDataGB = totalDataGB.toIntOrNull() ?: 300,
+                    currentRemainingGB = remainingDataGB.toIntOrNull() ?: 196,
+                    billingStartDate = startDate.toString(),
                     billingEndDate = endDate.toString(),
                     lastUpdated = LocalDate.now().toString()
                 )
@@ -203,65 +264,5 @@ fun SettingsScreen(
         ) {
             DatePicker(state = endDatePickerState)
         }
-            onValueChange = { startDate = it },
-            label = { Text("Plan Start Date", fontSize = 16.sp) },
-            placeholder = { Text("YYYY-MM-DD", fontSize = 14.sp) },
-            textStyle = MaterialTheme.typography.bodyLarge.copy(fontSize = 20.sp),
-            modifier = Modifier.fillMaxWidth()
-        )
-        
-        // End Date
-        OutlinedTextField(
-            value = endDate,
-            onValueChange = { endDate = it },
-            label = { Text("Plan End Date", fontSize = 16.sp) },
-            placeholder = { Text("YYYY-MM-DD", fontSize = 14.sp) },
-            textStyle = MaterialTheme.typography.bodyLarge.copy(fontSize = 20.sp),
-            modifier = Modifier.fillMaxWidth()
-        )
-        
-        Spacer(modifier = Modifier.height(24.dp))
-        
-        // Save Button
-        Button(
-            onClick = {
-                val config = PlanConfig(
-                    totalDataGB = totalDataGB.toIntOrNull() ?: 300,
-                    currentRemainingGB = remainingDataGB.toIntOrNull() ?: 196,
-                    billingStartDate = startDate,
-                    billingEndDate = endDate,
-                    lastUpdated = LocalDate.now().toString()
-                )
-                onSaveConfig(config)
-                onBack()
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF4CAF50)
-            )
-        ) {
-            Text(
-                text = "💾 Save Settings",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
-            )
-        }
-        
-        // Cancel Button
-        OutlinedButton(
-            onClick = onBack,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp)
-        ) {
-            Text(
-                text = "Cancel",
-                fontSize = 18.sp
-            )
-        }
-        
-        Spacer(modifier = Modifier.height(16.dp))
     }
 }
