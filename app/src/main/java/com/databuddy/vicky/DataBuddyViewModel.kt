@@ -20,7 +20,9 @@ data class DataBuddyUiState(
     val totalDataGB: Int = 300,
     val remainingDataGB: Int = 0,
     val larryMessage: String = "Welcome! Let's set up your data plan first.",
-    val usageStatus: UsageStatus = UsageStatus.UNKNOWN
+    val usageStatus: UsageStatus = UsageStatus.UNKNOWN,
+    val userName: String = "",
+    val helperName: String = ""
 )
 
 enum class UsageStatus {
@@ -100,7 +102,15 @@ class DataBuddyViewModel(application: Application) : AndroidViewModel(applicatio
         Log.d("DataBuddy", "Actual remaining: $actualRemaining GB (should be ${config.currentRemainingGB} - total_usage)")
         
         val status = calculateUsageStatus(currentUsage, monthlyBudget)
-        val message = generateLarryMessage(status, currentUsage, previousUsage, monthlyBudget, actualRemaining.toInt())
+        val message = generateMessage(
+            status = status,
+            currentUsage = currentUsage,
+            lastMonthUsage = previousUsage,
+            monthlyBudget = monthlyBudget,
+            remainingData = actualRemaining.toInt(),
+            userName = config.userName,
+            helperName = config.helperName
+        )
         
         _uiState.value = DataBuddyUiState(
             isConfigured = true,
@@ -110,7 +120,9 @@ class DataBuddyViewModel(application: Application) : AndroidViewModel(applicatio
             totalDataGB = config.totalDataGB,
             remainingDataGB = actualRemaining.toInt(),
             larryMessage = message,
-            usageStatus = status
+            usageStatus = status,
+            userName = config.userName,
+            helperName = config.helperName
         )
     }
     
@@ -125,42 +137,75 @@ class DataBuddyViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
     
-    private fun generateLarryMessage(
+    /**
+     * Generate personalized or generic message based on helper name
+     */
+    private fun generateMessage(
         status: UsageStatus,
         currentUsage: Double,
         lastMonthUsage: Double,
         monthlyBudget: Double,
-        remainingData: Int
+        remainingData: Int,
+        userName: String,
+        helperName: String
     ): String {
         val currentUsageInt = currentUsage.roundToInt()
         val lastMonthUsageInt = lastMonthUsage.roundToInt()
         val budgetInt = monthlyBudget.roundToInt()
         
+        val userGreeting = if (userName.isNotBlank()) "$userName, " else ""
+        val hasHelper = helperName.isNotBlank()
+        
         return when (status) {
             UsageStatus.WELL_UNDER -> {
-                if (lastMonthUsage > 0) {
-                    "You used ${lastMonthUsageInt}GB last month and only ${currentUsageInt}GB this month. You've got heaps left! Stream away!"
+                if (hasHelper) {
+                    if (lastMonthUsage > 0) {
+                        "🎉 Hey $userGreeting$helperName here! You used ${lastMonthUsageInt}GB last month and only ${currentUsageInt}GB this month. You're crushing it - stream away!"
+                    } else {
+                        "🎉 $userGreeting$helperName's impressed! You've only used ${currentUsageInt}GB this month with ${remainingData}GB left. Stream till you fall asleep!"
+                    }
                 } else {
-                    "You've only used ${currentUsageInt}GB this month and you have ${remainingData}GB left. Stream till you fall asleep, you've got plenty!"
+                    if (lastMonthUsage > 0) {
+                        "✅ Great work! You used ${lastMonthUsageInt}GB last month and ${currentUsageInt}GB this month. You have plenty of data remaining."
+                    } else {
+                        "✅ Excellent! You've used ${currentUsageInt}GB this month with ${remainingData}GB remaining. You're well under budget."
+                    }
                 }
             }
             
             UsageStatus.ON_TRACK -> {
-                "You're doing great! You've used ${currentUsageInt}GB this month, right on track with your ${budgetInt}GB monthly budget. Keep it up!"
+                if (hasHelper) {
+                    "👍 ${userGreeting}you're doing great! $helperName says you've used ${currentUsageInt}GB this month, right on track with your ${budgetInt}GB budget. Keep it up!"
+                } else {
+                    "📊 On track! You've used ${currentUsageInt}GB this month, matching your ${budgetInt}GB monthly budget well."
+                }
             }
             
             UsageStatus.SLIGHTLY_OVER -> {
-                "You've used ${currentUsageInt}GB this month (budget is ${budgetInt}GB). Maybe ease up a little bit to stay balanced, but you're still doing fine!"
+                if (hasHelper) {
+                    "⚠️ Hey $userGreeting$helperName thinks you've used ${currentUsageInt}GB this month (budget is ${budgetInt}GB). Maybe ease up a little to stay balanced!"
+                } else {
+                    "⚠️ Usage alert: You've used ${currentUsageInt}GB this month against a ${budgetInt}GB budget. Consider reducing usage slightly."
+                }
             }
             
             UsageStatus.OVER_BUDGET -> {
-                "Heads up Vicky! You've used ${currentUsageInt}GB this month when your budget is ${budgetInt}GB. Might want to watch a bit less next month to even things out!"
+                if (hasHelper) {
+                    "🚨 Heads up ${userGreeting}! $helperName noticed you've used ${currentUsageInt}GB when your budget is ${budgetInt}GB. Might want to watch it a bit next month!"
+                } else {
+                    "🚨 Over budget: You've used ${currentUsageInt}GB this month against a ${budgetInt}GB budget. Try to reduce usage next month."
+                }
             }
             
             UsageStatus.UNKNOWN -> {
-                "Welcome! Let's set up your data plan details so I can help you track your usage."
+                if (hasHelper && userName.isNotBlank()) {
+                    "👋 Hi $userName! $helperName here. Let's set up your data plan so I can help you track your usage!"
+                } else {
+                    "Welcome! Set up your data plan details to start tracking your usage."
+                }
             }
         }
+    }
     }
     
     fun savePlanConfig(config: PlanConfig) {

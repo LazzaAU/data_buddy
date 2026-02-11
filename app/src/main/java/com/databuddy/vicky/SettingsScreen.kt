@@ -32,6 +32,8 @@ fun SettingsScreen(
     // Aussie date formatter: 11-Nov-2026
     val dateFormatter = remember { DateTimeFormatter.ofPattern("dd-MMM-yyyy", Locale.ENGLISH) }
     
+    var userName by remember { mutableStateOf(currentConfig?.userName ?: "") }
+    var helperName by remember { mutableStateOf(currentConfig?.helperName ?: "") }
     var totalDataGB by remember { mutableStateOf(currentConfig?.totalDataGB?.toString() ?: "300") }
     var remainingDataGB by remember { mutableStateOf(currentConfig?.currentRemainingGB?.toString() ?: "196") }
     
@@ -96,6 +98,27 @@ fun SettingsScreen(
         }
         
         Spacer(modifier = Modifier.height(8.dp))
+        
+        // User Name
+        OutlinedTextField(
+            value = userName,
+            onValueChange = { userName = it },
+            label = { Text("Your Name (optional)", fontSize = 16.sp) },
+            placeholder = { Text("e.g., Vicky", fontSize = 14.sp) },
+            textStyle = MaterialTheme.typography.bodyLarge.copy(fontSize = 20.sp),
+            modifier = Modifier.fillMaxWidth()
+        )
+        
+        // Helper Name
+        OutlinedTextField(
+            value = helperName,
+            onValueChange = { helperName = it },
+            label = { Text("Helper Name (optional)", fontSize = 16.sp) },
+            placeholder = { Text("e.g., Larry", fontSize = 14.sp) },
+            supportingText = { Text("Leave blank for generic messages", fontSize = 12.sp) },
+            textStyle = MaterialTheme.typography.bodyLarge.copy(fontSize = 20.sp),
+            modifier = Modifier.fillMaxWidth()
+        )
         
         // Total Data
         OutlinedTextField(
@@ -177,6 +200,8 @@ fun SettingsScreen(
         Button(
             onClick = {
                 val config = PlanConfig(
+                    userName = userName.trim(),
+                    helperName = helperName.trim(),
                     totalDataGB = totalDataGB.toIntOrNull() ?: 300,
                     currentRemainingGB = remainingDataGB.toIntOrNull() ?: 196,
                     billingStartDate = startDate.toString(),

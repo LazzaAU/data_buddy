@@ -172,15 +172,18 @@ fun MainDashboard(
                 modifier = Modifier.padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = "👋 Larry says:",
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White,
-                    textAlign = TextAlign.Center
-                )
-                
-                Spacer(modifier = Modifier.height(12.dp))
+                // Show greeting only if helper name exists
+                if (uiState.helperName.isNotBlank()) {
+                    Text(
+                        text = "💬 ${uiState.helperName} says:",
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
+                        textAlign = TextAlign.Center
+                    )
+                    
+                    Spacer(modifier = Modifier.height(12.dp))
+                }
                 
                 Text(
                     text = uiState.larryMessage,

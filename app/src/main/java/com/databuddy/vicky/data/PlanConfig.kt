@@ -16,5 +16,7 @@ data class PlanConfig(
     val currentRemainingGB: Int,    // e.g., 196 GB (what user has left NOW)
     val billingStartDate: String,   // e.g., "2025-11-01"
     val billingEndDate: String,     // e.g., "2026-11-01"
+    val userName: String = "",      // e.g., "Vicky" for personalization
+    val helperName: String = "",    // e.g., "Larry" for friendly messages (blank = generic)
     val lastUpdated: String = LocalDate.now().toString()
 )
