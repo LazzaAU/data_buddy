@@ -153,6 +153,15 @@ fun MainDashboard(
             fontWeight = FontWeight.Bold,
             color = Color(0xFF1976D2)
         )
+        
+        // Larry's Message Card
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = when (uiState.usageStatus) {
+                    UsageStatus.WELL_UNDER -> Color(0xFF4CAF50)
+                    UsageStatus.ON_TRACK -> Color(0xFF2196F3)
+                    UsageStatus.SLIGHTLY_OVER -> Color(0xFFFF9800)
                     UsageStatus.OVER_BUDGET -> Color(0xFFF44336)
                     else -> Color(0xFF2196F3)
                 }
