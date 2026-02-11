@@ -17,7 +17,11 @@ import androidx.compose.ui.unit.sp
 import com.databuddy.vicky.data.PlanConfig
 import java.time.Instant
 import java.time.LocalDate
-iOptIn(ExperimentalMaterial3Api::class)
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.Locale
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
     currentConfig: PlanConfig?,
