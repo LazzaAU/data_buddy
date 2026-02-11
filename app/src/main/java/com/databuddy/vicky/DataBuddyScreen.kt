@@ -41,26 +41,25 @@ fun WelcomeScreen(onNavigateToSettings: () -> Unit) {
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFF5F5F5))
-            .padding(24.dp),
+            .padding(20.dp)
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        Spacer(modifier = Modifier.height(16.dp))
+        
         Text(
             text = "👋",
-            fontSize = 80.sp
+            fontSize = 60.sp
         )
-        
-        Spacer(modifier = Modifier.height(24.dp))
         
         Text(
             text = "Welcome to Data Buddy!",
-            fontSize = 40.sp,
+            fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
             color = Color(0xFF1976D2),
             textAlign = TextAlign.Center
         )
-        
-        Spacer(modifier = Modifier.height(16.dp))
         
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -69,33 +68,31 @@ fun WelcomeScreen(onNavigateToSettings: () -> Unit) {
             )
         ) {
             Column(
-                modifier = Modifier.padding(32.dp),
+                modifier = Modifier.padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     text = "Larry says:",
-                    fontSize = 28.sp,
+                    fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = "Let's get started by setting up your data plan details!",
-                    fontSize = 24.sp,
+                    fontSize = 20.sp,
                     color = Color.White,
                     textAlign = TextAlign.Center,
-                    lineHeight = 36.sp
+                    lineHeight = 30.sp
                 )
             }
         }
-        
-        Spacer(modifier = Modifier.height(32.dp))
         
         Button(
             onClick = onNavigateToSettings,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(72.dp),
+                .height(60.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFF4CAF50)
             )
@@ -103,15 +100,17 @@ fun WelcomeScreen(onNavigateToSettings: () -> Unit) {
             Icon(
                 imageVector = Icons.Default.Settings,
                 contentDescription = "Settings",
-                modifier = Modifier.size(32.dp)
+                modifier = Modifier.size(28.dp)
             )
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = "Set Up Now",
-                fontSize = 28.sp,
+                fontSize = 22.sp,
                 fontWeight = FontWeight.Bold
             )
         }
+        
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }
 

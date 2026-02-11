@@ -107,14 +107,14 @@ fun PermissionRequestScreen(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(64.dp),
+                .height(60.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFF4CAF50)
             )
         ) {
             Text(
                 text = "✅ Grant Permission",
-                fontSize = 24.sp,
+                fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
             )
         }
