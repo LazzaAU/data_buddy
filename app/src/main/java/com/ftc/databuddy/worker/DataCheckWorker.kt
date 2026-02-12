@@ -1,13 +1,13 @@
-package com.databuddy.vicky.worker
+package com.ftc.databuddy.worker
 
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.databuddy.vicky.data.DataBuddyDatabase
-import com.databuddy.vicky.repository.DataBuddyRepository
-import com.databuddy.vicky.util.DataUsageReader
-import com.databuddy.vicky.util.NotificationHelper
-import com.databuddy.vicky.util.NotificationTracker
+import com.ftc.databuddy.data.DataBuddyDatabase
+import com.ftc.databuddy.repository.DataBuddyRepository
+import com.ftc.databuddy.util.DataUsageReader
+import com.ftc.databuddy.util.NotificationHelper
+import com.ftc.databuddy.util.NotificationTracker
 import kotlinx.coroutines.flow.first
 import java.time.LocalDate
 import kotlin.math.roundToInt

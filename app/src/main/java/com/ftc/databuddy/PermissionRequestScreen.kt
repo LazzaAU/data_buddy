@@ -1,4 +1,4 @@
-package com.databuddy.vicky
+package com.ftc.databuddy
 
 import android.content.Intent
 import android.provider.Settings

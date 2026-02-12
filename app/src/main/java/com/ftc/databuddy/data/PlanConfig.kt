@@ -1,4 +1,4 @@
-package com.databuddy.vicky.data
+package com.ftc.databuddy.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -12,8 +12,8 @@ import java.time.LocalDate
 data class PlanConfig(
     @PrimaryKey
     val id: Int = 1, // Single row config
-    val totalDataGB: Int,           // e.g., 300 GB
-    val currentRemainingGB: Int,    // e.g., 196 GB (what user has left NOW)
+    val totalDataGB: Double,        // e.g., 300.0 GB or 14.0 GB
+    val currentRemainingGB: Double, // e.g., 196.5 GB or 10.8 GB (what user has left NOW)
     val billingStartDate: String,   // e.g., "2025-11-01"
     val billingEndDate: String,     // e.g., "2026-11-01"
     val userName: String = "",      // e.g., "Vicky" for personalization

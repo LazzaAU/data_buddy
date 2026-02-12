@@ -1,4 +1,4 @@
-package com.databuddy.vicky.ui.theme
+package com.ftc.databuddy.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

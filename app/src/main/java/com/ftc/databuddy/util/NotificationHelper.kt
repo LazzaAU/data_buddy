@@ -1,4 +1,4 @@
-package com.databuddy.vicky.util
+package com.ftc.databuddy.util
 
 import android.Manifest
 import android.app.NotificationChannel
@@ -11,8 +11,8 @@ import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.databuddy.vicky.MainActivity
-import com.databuddy.vicky.R
+import com.ftc.databuddy.MainActivity
+import com.ftc.databuddy.R
 
 object NotificationHelper {
     

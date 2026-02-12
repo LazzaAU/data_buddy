@@ -1,4 +1,4 @@
-package com.databuddy.vicky
+package com.ftc.databuddy
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -14,9 +14,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.databuddy.vicky.ui.theme.DataBuddyTheme
-import com.databuddy.vicky.util.NotificationHelper
-import com.databuddy.vicky.util.WorkManagerHelper
+import com.ftc.databuddy.ui.theme.DataBuddyTheme
+import com.ftc.databuddy.util.NotificationHelper
+import com.ftc.databuddy.util.WorkManagerHelper
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

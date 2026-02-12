@@ -1,4 +1,4 @@
-package com.databuddy.vicky.data
+package com.ftc.databuddy.data
 
 import androidx.room.Entity
 

@@ -1,4 +1,4 @@
-package com.databuddy.vicky.data
+package com.ftc.databuddy.data
 
 import android.content.Context
 import androidx.room.Database
@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 
 @Database(
     entities = [PlanConfig::class, MonthlyUsage::class],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 abstract class DataBuddyDatabase : RoomDatabase() {

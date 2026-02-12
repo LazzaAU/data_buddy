@@ -1,12 +1,12 @@
-package com.databuddy.vicky
+package com.ftc.databuddy
 
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.databuddy.vicky.data.*
-import com.databuddy.vicky.repository.DataBuddyRepository
-import com.databuddy.vicky.util.DataUsageReader
+import com.ftc.databuddy.data.*
+import com.ftc.databuddy.repository.DataBuddyRepository
+import com.ftc.databuddy.util.DataUsageReader
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -17,8 +17,8 @@ data class DataBuddyUiState(
     val monthlyBudgetGB: Double = 0.0,
     val lastMonthUsageGB: Double = 0.0,
     val currentMonthUsageGB: Double = 0.0,
-    val totalDataGB: Int = 300,
-    val remainingDataGB: Int = 0,
+    val totalDataGB: Double = 300.0,
+    val remainingDataGB: Double = 0.0,
     val larryMessage: String = "Welcome! Let's set up your data plan first.",
     val usageStatus: UsageStatus = UsageStatus.UNKNOWN,
     val userName: String = "",
@@ -118,7 +118,7 @@ class DataBuddyViewModel(application: Application) : AndroidViewModel(applicatio
             lastMonthUsageGB = previousUsage,
             currentMonthUsageGB = currentUsage,
             totalDataGB = config.totalDataGB,
-            remainingDataGB = actualRemaining.toInt(),
+            remainingDataGB = actualRemaining,
             larryMessage = message,
             usageStatus = status,
             userName = config.userName,

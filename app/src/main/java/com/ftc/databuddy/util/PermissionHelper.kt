@@ -1,4 +1,4 @@
-package com.databuddy.vicky.util
+package com.ftc.databuddy.util
 
 import android.content.Context
 import android.content.Intent

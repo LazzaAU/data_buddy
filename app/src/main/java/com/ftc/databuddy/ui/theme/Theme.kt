@@ -1,4 +1,4 @@
-package com.databuddy.vicky.ui.theme
+package com.ftc.databuddy.ui.theme
 
 import android.app.Activity
 import android.os.Build

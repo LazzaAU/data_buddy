@@ -1,8 +1,8 @@
-package com.databuddy.vicky.util
+package com.ftc.databuddy.util
 
 import android.content.Context
 import androidx.work.*
-import com.databuddy.vicky.worker.DataCheckWorker
+import com.ftc.databuddy.worker.DataCheckWorker
 import java.util.concurrent.TimeUnit
 
 object WorkManagerHelper {

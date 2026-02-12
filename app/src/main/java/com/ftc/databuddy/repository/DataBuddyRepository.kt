@@ -1,6 +1,6 @@
-package com.databuddy.vicky.repository
+package com.ftc.databuddy.repository
 
-import com.databuddy.vicky.data.*
+import com.ftc.databuddy.data.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import java.time.LocalDate
@@ -53,20 +53,19 @@ class DataBuddyRepository(private val dao: DataBuddyDao) {
         val endDate = LocalDate.parse(config.billingEndDate)
         val today = LocalDate.now()
         
-        // Calculate months remaining (including current month)
+        // Calculate months remaining from today to end date
         val monthsRemaining = ChronoUnit.MONTHS.between(
             YearMonth.from(today),
             YearMonth.from(endDate)
-        ) + 1 // +1 to include current month
+        )
         
         // Get actual remaining data (initial - all usage)
         val actualRemaining = calculateActualRemainingData(config)
         
-        return if (monthsRemaining > 0) {
-            actualRemaining / monthsRemaining
-        } else {
-            actualRemaining
-        }
+        // Use at least 1 month to avoid division by zero
+        val divisor = if (monthsRemaining > 0) monthsRemaining else 1
+        
+        return actualRemaining / divisor
     }
     
     /**

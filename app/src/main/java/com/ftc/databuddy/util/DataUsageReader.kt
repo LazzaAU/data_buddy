@@ -1,4 +1,4 @@
-package com.databuddy.vicky.util
+package com.ftc.databuddy.util
 
 import android.app.AppOpsManager
 import android.app.usage.NetworkStats

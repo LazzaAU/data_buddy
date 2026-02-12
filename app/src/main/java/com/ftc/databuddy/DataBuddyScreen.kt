@@ -1,4 +1,4 @@
-package com.databuddy.vicky
+package com.ftc.databuddy
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -252,7 +252,7 @@ fun MainDashboard(
                     color = Color.White
                 )
                 Text(
-                    text = "of ${uiState.totalDataGB} GB plan",
+                    text = "of ${String.format("%.1f", uiState.totalDataGB)} GB plan",
                     fontSize = 16.sp,
                     color = Color.White.copy(alpha = 0.9f)
                 )

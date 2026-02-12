@@ -1,4 +1,4 @@
-package com.databuddy.vicky
+package com.ftc.databuddy
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -15,14 +15,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.databuddy.vicky.data.PlanConfig
+import com.ftc.databuddy.data.PlanConfig
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 import androidx.compose.ui.draw.scale
-import com.databuddy.vicky.ui.theme.DataBuddyTheme
+import com.ftc.databuddy.ui.theme.DataBuddyTheme
 import com.google.rpc.Help
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -227,8 +227,8 @@ fun SettingsScreen(
                 val config = PlanConfig(
                     userName = userName.trim(),
                     helperName = helperName.trim(),
-                    totalDataGB = totalDataGB.toIntOrNull() ?: 300,
-                    currentRemainingGB = remainingDataGB.toIntOrNull() ?: 196,
+                    totalDataGB = totalDataGB.toDoubleOrNull() ?: 300.0,
+                    currentRemainingGB = remainingDataGB.toDoubleOrNull() ?: 196.0,
                     billingStartDate = startDate.toString(),
                     billingEndDate = endDate.toString(),
                     lastUpdated = LocalDate.now().toString()
