@@ -44,6 +44,7 @@ fun DataBuddyApp() {
     val navController = rememberNavController()
     val viewModel: DataBuddyViewModel = viewModel()
     val uiState by viewModel.uiState.collectAsState()
+    val currentConfig by viewModel.currentConfig.collectAsState()
     val hasPermission = viewModel.hasUsagePermission()
     
     NavHost(
@@ -71,11 +72,18 @@ fun DataBuddyApp() {
         
         composable("settings") {
             SettingsScreen(
-                currentConfig = null, // Will be loaded from DB in a real implementation
+                currentConfig = currentConfig,
                 onSaveConfig = { config ->
                     viewModel.savePlanConfig(config)
                 },
-                onBack = { navController.popBackStack() }
+                onBack = { navController.popBackStack() },
+                onNavigateToHelp = { navController.navigate("help") }
+            )
+        }
+        
+        composable("help") {
+            HelpScreen(
+                onNavigateBack = { navController.popBackStack() }
             )
         }
     }

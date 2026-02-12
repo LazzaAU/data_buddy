@@ -1,5 +1,6 @@
 package com.databuddy.vicky
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -13,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -145,7 +147,10 @@ fun MainDashboard(
                 )
             }
         }
-        
+        Image(
+            painter = painterResource(id = R.drawable.databuddy),
+            contentDescription = "Data Buddy Logo",
+        )
         // App title centered
         Text(
             text = "📱 Data Buddy",
@@ -172,19 +177,6 @@ fun MainDashboard(
                 modifier = Modifier.padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Show greeting only if helper name exists
-                if (uiState.helperName.isNotBlank()) {
-                    Text(
-                        text = "💬 ${uiState.helperName} says:",
-                        fontSize = 22.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White,
-                        textAlign = TextAlign.Center
-                    )
-                    
-                    Spacer(modifier = Modifier.height(12.dp))
-                }
-                
                 Text(
                     text = uiState.larryMessage,
                     fontSize = 19.sp,

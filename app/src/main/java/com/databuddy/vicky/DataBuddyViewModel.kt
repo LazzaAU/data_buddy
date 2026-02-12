@@ -162,7 +162,7 @@ class DataBuddyViewModel(application: Application) : AndroidViewModel(applicatio
                     if (lastMonthUsage > 0) {
                         "🎉 Hey $userGreeting$helperName here! You used ${lastMonthUsageInt}GB last month and only ${currentUsageInt}GB this month. You're crushing it - stream away!"
                     } else {
-                        "🎉 $userGreeting$helperName's impressed! You've only used ${currentUsageInt}GB this month with ${remainingData}GB left. Stream till you fall asleep!"
+                        "🎉 $userGreeting$helperName's impressed! You've only used ${currentUsageInt}GB this month of your monthly ${budgetInt}GB budget with ${remainingData}GB left. Stream till you fall asleep!💤 😏"
                     }
                 } else {
                     if (lastMonthUsage > 0) {
@@ -206,13 +206,19 @@ class DataBuddyViewModel(application: Application) : AndroidViewModel(applicatio
             }
         }
     }
-    }
     
     fun savePlanConfig(config: PlanConfig) {
         viewModelScope.launch {
             repository.savePlanConfig(config)
         }
     }
+    
+    // Expose the current config as a Flow
+    val currentConfig: StateFlow<PlanConfig?> = repository.planConfig.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = null
+    )
     
     fun updateCurrentMonthUsage(dataUsedGB: Double) {
         viewModelScope.launch {
