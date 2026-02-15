@@ -32,17 +32,64 @@ class DataBuddyRepository(private val dao: DataBuddyDao) {
     }
     
     /**
-     * Calculate actual remaining data by subtracting all usage since setup
+     * Check if month has changed since last config update, and roll over if needed.
+     * Returns the updated config or null if no update needed.
+     */
+    suspend fun checkAndRolloverMonth(config: PlanConfig): PlanConfig? {
+        val now = LocalDate.now()
+        val currentYear = now.year
+        val currentMonth = now.monthValue
+        
+        // Check if we're in a new month
+        if (config.lastUpdatedYear == currentYear && config.lastUpdatedMonth == currentMonth) {
+            // Same month, no rollover needed
+            return null
+        }
+        
+        // Month has changed! Get the previous month's TOTAL usage from database
+        val previousMonthUsage = dao.getUsageForMonth(config.lastUpdatedYear, config.lastUpdatedMonth)
+        val usageToSubtract = previousMonthUsage?.dataUsedGB ?: 0.0
+        
+        android.util.Log.d("DataBuddy", "Month rollover detected: ${config.lastUpdatedYear}-${config.lastUpdatedMonth} -> $currentYear-$currentMonth")
+        android.util.Log.d("DataBuddy", "Subtracting previous month usage: ${usageToSubtract}GB from ${config.currentRemainingGB}GB")
+        
+        // Calculate new remaining: old remaining - previous month's total usage
+        val newRemaining = config.currentRemainingGB - usageToSubtract
+        
+        // Create updated config with new month and new remaining balance
+        val updatedConfig = config.copy(
+            currentRemainingGB = newRemaining,
+            lastUpdatedYear = currentYear,
+            lastUpdatedMonth = currentMonth,
+            lastUpdated = now.toString()
+        )
+        
+        // Save the updated config
+        dao.insertPlanConfig(updatedConfig)
+        
+        android.util.Log.d("DataBuddy", "New remaining balance for $currentYear-$currentMonth: ${newRemaining}GB")
+        
+        return updatedConfig
+    }
+    
+    /**
+     * Calculate actual remaining data by subtracting current month's usage only.
+     * config.currentRemainingGB represents what the user had at the START of the current month.
      */
     suspend fun calculateActualRemainingData(config: PlanConfig): Double {
-        val allUsage = dao.getAllMonthlyUsage().first()
-        val totalUsed = allUsage.sumOf { it.dataUsedGB }
-        android.util.Log.d("DataBuddy", "calculateActualRemaining: ${config.currentRemainingGB}GB - ${totalUsed}GB = ${config.currentRemainingGB - totalUsed}GB")
-        android.util.Log.d("DataBuddy", "All usage records: ${allUsage.size}")
-        allUsage.forEach { usage ->
-            android.util.Log.d("DataBuddy", "  ${usage.year}-${usage.month}: ${usage.dataUsedGB}GB")
-        }
-        return config.currentRemainingGB - totalUsed
+        val now = LocalDate.now()
+        val currentYear = now.year
+        val currentMonth = now.monthValue
+        
+        // Get current month's usage
+        val currentMonthUsage = dao.getUsageForMonth(currentYear, currentMonth)
+        val currentUsed = currentMonthUsage?.dataUsedGB ?: 0.0
+        
+        val remaining = config.currentRemainingGB - currentUsed
+        
+        android.util.Log.d("DataBuddy", "calculateActualRemaining: ${config.currentRemainingGB}GB (month start) - ${currentUsed}GB (used this month) = ${remaining}GB")
+        
+        return remaining
     }
     
     /**

@@ -13,10 +13,12 @@ data class PlanConfig(
     @PrimaryKey
     val id: Int = 1, // Single row config
     val totalDataGB: Double,        // e.g., 300.0 GB or 14.0 GB
-    val currentRemainingGB: Double, // e.g., 196.5 GB or 10.8 GB (what user has left NOW)
+    val currentRemainingGB: Double, // Remaining data at the START of lastUpdatedMonth (auto-calculated to include current month usage)
     val billingStartDate: String,   // e.g., "2025-11-01"
     val billingEndDate: String,     // e.g., "2026-11-01"
     val userName: String = "",      // e.g., "Vicky" for personalization
     val helperName: String = "",    // e.g., "Larry" for friendly messages (blank = generic)
-    val lastUpdated: String = LocalDate.now().toString()
+    val lastUpdated: String = LocalDate.now().toString(),
+    val lastUpdatedYear: Int = LocalDate.now().year,   // Year when currentRemainingGB was set
+    val lastUpdatedMonth: Int = LocalDate.now().monthValue  // Month when currentRemainingGB was set
 )

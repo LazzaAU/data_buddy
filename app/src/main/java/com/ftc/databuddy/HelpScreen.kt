@@ -98,7 +98,7 @@ fun HelpScreen(
         
         SettingExplanation(
             label = "Current Remaining Data (GB)",
-            explanation = "How many GB are left RIGHT NOW in the plan. Check the phone provider's app or website to verify accuracy periodically."
+            explanation = "How many GB are left RIGHT NOW in the plan. Just check your phone provider's app or website and enter exactly what it says. The app will automatically calculate everything from there!"
         )
         
         Spacer(modifier = Modifier.height(20.dp))

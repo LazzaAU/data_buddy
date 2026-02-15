@@ -160,7 +160,7 @@ fun SettingsScreen(
             onValueChange = { remainingDataGB = it },
             label = { Text("Current Remaining (GB)", fontSize = 16.sp) },
             placeholder = { Text("e.g., 196", fontSize = 14.sp) },
-            supportingText = { Text("Current remaining data", fontSize = 12.sp) },
+            supportingText = { Text("What your carrier shows right now", fontSize = 12.sp) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             textStyle = MaterialTheme.typography.bodyLarge.copy(fontSize = 20.sp),
             modifier = Modifier.fillMaxWidth(),

@@ -73,7 +73,9 @@ class DataBuddyViewModel(application: Application) : AndroidViewModel(applicatio
                 repository.lastTwoMonths
             ) { config, recentUsage ->
                 if (config != null) {
-                    updateUiState(config, recentUsage)
+                    // Check if month has rolled over and update balance if needed
+                    val updatedConfig = repository.checkAndRolloverMonth(config) ?: config
+                    updateUiState(updatedConfig, recentUsage)
                 } else {
                     _uiState.value = DataBuddyUiState(isConfigured = false)
                 }
@@ -209,7 +211,27 @@ class DataBuddyViewModel(application: Application) : AndroidViewModel(applicatio
     
     fun savePlanConfig(config: PlanConfig) {
         viewModelScope.launch {
-            repository.savePlanConfig(config)
+            // Get current month's usage from Android
+            val currentMonthUsage = if (dataUsageReader.hasUsageStatsPermission()) {
+                dataUsageReader.getCurrentMonthDataUsage()
+            } else {
+                0.0
+            }
+            
+            // User enters what they see in their carrier app RIGHT NOW
+            // We need to add back current month's usage to get the "start of month" value
+            val adjustedRemaining = config.currentRemainingGB + currentMonthUsage
+            
+            Log.d("DataBuddy", "Saving config: User entered ${config.currentRemainingGB}GB, current month usage ${currentMonthUsage}GB")
+            Log.d("DataBuddy", "Storing adjusted value: ${adjustedRemaining}GB (start of month balance)")
+            
+            val adjustedConfig = config.copy(
+                currentRemainingGB = adjustedRemaining,
+                lastUpdatedYear = LocalDate.now().year,
+                lastUpdatedMonth = LocalDate.now().monthValue
+            )
+            
+            repository.savePlanConfig(adjustedConfig)
         }
     }
     
